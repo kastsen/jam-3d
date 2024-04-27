@@ -117,24 +117,104 @@ window.onload = function () {
         let previousMousePosition = { x: 0, y: 0 };
 
         // Добавляем обработчики событий для мыши
-        document.addEventListener('mousedown', onMouseDown);
+        document.addEventListener('pointerdown', onMouseDown);
         document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
+        document.addEventListener('touchmove', onMouseMove);
+        document.addEventListener('pointerup', onMouseUp);
 
-        function onMouseDown(event: { clientX: any; clientY: any; }) {
+        // window.addEventListener('touchstart', onTouchStart);
+        // window.addEventListener('touchmove', onTouchMove);
+        // document.addEventListener('touchend', onTouchEnd);
+
+        document.addEventListener('touchmove', onTouchMove);
+
+
+
+        renderer.domElement.addEventListener('click', onClick, false);
+        
+        let moveCar: any;
+
+        function onClick(event: { clientX: number; clientY: number; }) {
+            
+            console.log('onClick !!!!!!!!!!!!!!!!')
+            // Получаем координаты клика относительно canvas
+            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // Создаем вектор для луча, который будет проходить через точку клика
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(new THREE.Vector2(mouseX, mouseY), camera);
+
+            // Получаем список объектов, через которые прошел луч
+            const intersects = raycaster.intersectObjects(scene.children, true);
+
+            if (intersects.length > 0) {
+                // Если луч пересек объекты в сцене
+                const clickedObject = intersects[0].object;
+                if (clickedObject.parent?.name.match('green')) {
+                    moveCar = clickedObject;
+                }
+                console.log("Clicked object:", clickedObject.parent?.name);
+
+                // Вы можете выполнить здесь любые действия с объектом, например, изменить его цвет или размер
+            }
+        }
+
+        function onTouchStart(event: any) {
+            // Получаем координаты касания
+            const touch = event.touches[0];
+            previousMousePosition = { x: touch.clientX, y: touch.clientY };
+            isDragging = true;
+            console.log('!!!!!!!!!!!!!!!!')
+        }
+
+        
+
+        function onTouchEnd() {
+            // Конец перетаскивания объекта по тачпаду
+            isDragging = false;
+        }
+
+        function onMouseDown(event: any) {
+            console.log('onMouseDown !!!!!!!!!!!!!!!!')
             isDragging = true;
             previousMousePosition = { x: event.clientX, y: event.clientY };
         }
 
-        function onMouseMove(event: { clientX: number; clientY: number; }) {
+        function onTouchMove(event: any) {
+            console.log('onTouchMove')
+            console.log(event.touches[0])
+            if (isDragging) {
+                // Получаем текущие координаты касания
+                const touch = event.touches[0];
+                const deltaX = touch.clientX - previousMousePosition.x;
+                const deltaY = touch.clientY - previousMousePosition.y;
+                const car = root.children[0]; // Измените этот путь, если изменяется название дочерней сцены
+                car.position.z -= 10; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+
+                // Изменяем позицию объекта на сцене в соответствии с перемещением пальца по тачпаду
+                if (moveCar) {
+                    
+                }
+
+                // Обновляем предыдущие координаты касания
+                previousMousePosition = { x: touch.clientX, y: touch.clientY };
+            }
+        }
+
+        function onMouseMove(event: any) {
+            console.log('onMouseMove !!!!!!!!!!!!!!!!')
             if (isDragging) {
                 const deltaX = event.clientX - previousMousePosition.x;
                 const deltaY = event.clientY - previousMousePosition.y;
 
                 // Изменяем позицию объекта на сцене в соответствии с перемещением мыши
-                const car = root.children[0]; // Измените этот путь, если изменяется название дочерней сцены
+                // const car = root.children[0]; // Измените этот путь, если изменяется название дочерней сцены
                 // car.position.x += deltaY;
-                car.position.z -= deltaX; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+                if (moveCar) {
+                    moveCar.position.z -= deltaX; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+                    
+                }
 
                 previousMousePosition = { x: event.clientX, y: event.clientY };
             }
@@ -154,28 +234,7 @@ window.onload = function () {
 
 
 
-        renderer.domElement.addEventListener('click', onClick, false);
-
-        function onClick(event: { clientX: number; clientY: number; }) {
-            // Получаем координаты клика относительно canvas
-            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            // Создаем вектор для луча, который будет проходить через точку клика
-            const raycaster = new THREE.Raycaster();
-            raycaster.setFromCamera(new THREE.Vector2(mouseX, mouseY), camera);
-
-            // Получаем список объектов, через которые прошел луч
-            const intersects = raycaster.intersectObjects(scene.children, true);
-
-            if (intersects.length > 0) {
-                // Если луч пересек объекты в сцене
-                const clickedObject = intersects[0].object;
-                console.log("Clicked object:", clickedObject.parent?.name);
-
-                // Вы можете выполнить здесь любые действия с объектом, например, изменить его цвет или размер
-            }
-        }
+        
         
         
 
