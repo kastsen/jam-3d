@@ -91,13 +91,15 @@ window.onload = function () {
 
         // Создаем плоскость для теней (землю)
         GRASS = root.children[9];
-        const planeSize = 200;
-        const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
-        const planeMat = new THREE.MeshPhongMaterial({ color: 0x8AC, side: THREE.DoubleSide });
-        const planeMesh = new THREE.Mesh(planeGeo, planeMat);
-        planeMesh.rotation.x = Math.PI * -0.5; // Поворот плоскости в горизонтальной плоскости
-        planeMesh.receiveShadow = true; // Принимает тени
-        GRASS.add(planeMesh);
+        // const planeSize = 200;
+        // const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
+        // const planeMat = new THREE.MeshPhongMaterial({ color: 0x8AC, side: THREE.DoubleSide });
+        // const planeMesh = new THREE.Mesh(planeGeo, planeMat);
+        // planeMesh.rotation.x = Math.PI * -0.5; // Поворот плоскости в горизонтальной плоскости
+        // planeMesh.receiveShadow = true; // Принимает тени
+        // GRASS.add(planeMesh);
+
+       
         
         
 
@@ -111,12 +113,12 @@ window.onload = function () {
         // Устанавливаем параметры теней для всех объектов в сцене
         root.traverse((child) => {
             if (child instanceof Mesh) {
-                child.castShadow = true;
+                child.castShadow = false;
                 child.receiveShadow = true;
             }
         });
 
-        root.rotation.y = -Math.PI / 3; // 90 градусов в радианах
+        root.rotation.y = -Math.PI / 4; // 90 градусов в радианах
         root.position.x = 160;
 
         const scaleFactor = 2; // Фактор масштабирования

@@ -9,7 +9,8 @@ export let movingDisabled = false;
 
 export const moveCar = (car: any, event: any, previousMousePosition: any) => {
     if (!car) return;
-    console.log(car.name)
+    console.log(event);
+    console.log(car.name);
     if (car.name === CARS.green.name) {
         moveGreen(car, event, previousMousePosition);
     } else if (car.name === CARS.yellow.name) {
@@ -22,11 +23,13 @@ export const moveCar = (car: any, event: any, previousMousePosition: any) => {
 
 export const moveRed = (car: any, touch: any, previousMousePosition: any) => {
     const {position} = car;
+    const distance = touch.type === 'mousemove' ? 1 : 4;
+    console.log(touch.type);
     if (position.x > -17 || position.x < 20) {
         if (touch.clientX >= previousMousePosition.x) {
-            car.position.z -= 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+            car.position.z -= distance; // Учитывайте, что ось y в 3D-пространстве может быть обратной
         } else {
-            car.position.z += 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+            car.position.z += distance; // Учитывайте, что ось y в 3D-пространстве может быть обратной
         }
     }
     
@@ -59,12 +62,17 @@ export const moveGreen = (car: any, touch: any, previousMousePosition: any) => {
     if (movingDisabled) return;
     const {position} = car;
     console.log(position)
+
+    const distance = touch.type === 'mousemove' ? 1 : 2;
+    console.log(touch.type);
+    
+    
     if (position.z > -22 && position.z < 27) {
         if (touch.clientX >= previousMousePosition.x) {
-            car.position.z -= 2; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+            car.position.z -= distance; // Учитывайте, что ось y в 3D-пространстве может быть обратной
 
         } else {
-            car.position.z += 2; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+            car.position.z += distance; // Учитывайте, что ось y в 3D-пространстве может быть обратной
         }
     } else {
         if (position.z <= -22) {
