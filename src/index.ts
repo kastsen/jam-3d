@@ -7,6 +7,9 @@ import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectio
 
 import jam from '../assets/glb/parking_jam_5.glb';
 import {DirectionalLight, Mesh} from "three";
+import {moveGreen} from "./controllers/carMovement";
+
+export const CARS: any = {};
 
 window.onload = function () {
     // Создаем сцену
@@ -104,6 +107,10 @@ window.onload = function () {
         
         console.log(root)
 
+        CARS.green = root.children[0];
+        CARS.yellow = root.children[1];
+        CARS.red = root.children[2];
+
         // Постобработка для улучшения изображения
         const composer = new EffectComposer(renderer);
         const renderPass = new RenderPass(scene, camera);
@@ -119,24 +126,33 @@ window.onload = function () {
         // Добавляем обработчики событий для мыши
         document.addEventListener('pointerdown', onMouseDown);
         document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('touchmove', onMouseMove);
         document.addEventListener('pointerup', onMouseUp);
-
-        // window.addEventListener('touchstart', onTouchStart);
-        // window.addEventListener('touchmove', onTouchMove);
-        // document.addEventListener('touchend', onTouchEnd);
-
         document.addEventListener('touchmove', onTouchMove);
 
 
 
-        renderer.domElement.addEventListener('click', onClick, false);
+        // renderer.domElement.addEventListener('click', onClick, false);
         
-        let moveCar: any;
+        let activeCar: any;
 
-        function onClick(event: { clientX: number; clientY: number; }) {
-            
+        function onTouchStart(event: any) {
+            // Получаем координаты касания
+            const touch = event.touches[0];
+            previousMousePosition = { x: touch.clientX, y: touch.clientY };
+            isDragging = true;
+        }
+
+        function onTouchEnd() {
+            // Конец перетаскивания объекта по тачпаду
+            isDragging = false;
+        }
+
+        function onMouseDown(event: any) {
             console.log('onClick !!!!!!!!!!!!!!!!')
+
+            isDragging = true;
+            previousMousePosition = { x: event.clientX, y: event.clientY };
+
             // Получаем координаты клика относительно canvas
             const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
             const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -151,8 +167,12 @@ window.onload = function () {
             if (intersects.length > 0) {
                 // Если луч пересек объекты в сцене
                 const clickedObject = intersects[0].object;
-                if (clickedObject.parent?.name.match('green')) {
-                    moveCar = clickedObject;
+                if (clickedObject.parent?.name.match('green') || clickedObject?.name.match('green')) {
+                    activeCar = CARS.green;
+                } else if (clickedObject.parent?.name.match('yellow') || clickedObject?.name.match('yellow')) {
+                    activeCar = CARS.yellow;
+                } else if (clickedObject.parent?.name.match('red') || clickedObject?.name.match('red')) {
+                    activeCar = CARS.red;
                 }
                 console.log("Clicked object:", clickedObject.parent?.name);
 
@@ -160,42 +180,17 @@ window.onload = function () {
             }
         }
 
-        function onTouchStart(event: any) {
-            // Получаем координаты касания
-            const touch = event.touches[0];
-            previousMousePosition = { x: touch.clientX, y: touch.clientY };
-            isDragging = true;
-            console.log('!!!!!!!!!!!!!!!!')
-        }
-
-        
-
-        function onTouchEnd() {
-            // Конец перетаскивания объекта по тачпаду
-            isDragging = false;
-        }
-
-        function onMouseDown(event: any) {
-            console.log('onMouseDown !!!!!!!!!!!!!!!!')
-            isDragging = true;
-            previousMousePosition = { x: event.clientX, y: event.clientY };
-        }
-
         function onTouchMove(event: any) {
-            console.log('onTouchMove')
-            console.log(event.touches[0])
             if (isDragging) {
+                console.log('onTouchMove');
+                console.log(event.touches[0]);
+                console.log(previousMousePosition);
                 // Получаем текущие координаты касания
                 const touch = event.touches[0];
                 const deltaX = touch.clientX - previousMousePosition.x;
                 const deltaY = touch.clientY - previousMousePosition.y;
                 const car = root.children[0]; // Измените этот путь, если изменяется название дочерней сцены
-                car.position.z -= 10; // Учитывайте, что ось y в 3D-пространстве может быть обратной
-
-                // Изменяем позицию объекта на сцене в соответствии с перемещением пальца по тачпаду
-                if (moveCar) {
-                    
-                }
+                moveGreen(activeCar, touch, previousMousePosition);
 
                 // Обновляем предыдущие координаты касания
                 previousMousePosition = { x: touch.clientX, y: touch.clientY };
@@ -211,9 +206,10 @@ window.onload = function () {
                 // Изменяем позицию объекта на сцене в соответствии с перемещением мыши
                 // const car = root.children[0]; // Измените этот путь, если изменяется название дочерней сцены
                 // car.position.x += deltaY;
-                if (moveCar) {
-                    moveCar.position.z -= deltaX; // Учитывайте, что ось y в 3D-пространстве может быть обратной
-                    
+                const car = root.children[0];
+                if (activeCar) {
+                    activeCar.position.z -= deltaX; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+
                 }
 
                 previousMousePosition = { x: event.clientX, y: event.clientY };
