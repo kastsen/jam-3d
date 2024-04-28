@@ -23,7 +23,7 @@ window.onload = function () {
     const height = window.innerHeight;
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.set(200, 400, 300); // Немного спереди и высоко
-    camera.rotateX(-Math.PI / 4); // Поворот камеры на 45 градусов вокруг оси X
+    camera.rotateX(-Math.PI / 3); // Поворот камеры на 45 градусов вокруг оси X
 
     // Создаем рендерер
     const renderer = new THREE.WebGLRenderer();

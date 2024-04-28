@@ -15,9 +15,9 @@ export const moveCar = (car: any, event: any, previousMousePosition: any) => {
         moveGreen(car, event, previousMousePosition);
     } else if (car.name === CARS.yellow.name) {
         console.log('yellow')
-        moveYellow(car, event, previousMousePosition);
+        // moveYellow(car, event, previousMousePosition);
     } else if (car.name === CARS.red.name) {
-        moveRed(car, event, previousMousePosition);
+        // moveRed(car, event, previousMousePosition);
     }
 }
 
