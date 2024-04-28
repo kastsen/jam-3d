@@ -1,4 +1,5 @@
 import {CARS} from "../index";
+import {Raycaster} from "three";
 
 const carWidth = 20;
 const carHeight = 15;
@@ -25,6 +26,29 @@ export const moveRed = (car: any, touch: any, previousMousePosition: any) => {
             car.position.z += 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
         }
     }
+    
+    console.log(car)
+
+    // Создаем лучи
+//     const rays = [];
+//     for (let vertexIndex = 0; vertexIndex < car.geometry.vertices.length; vertexIndex++) {
+//         const localVertex = car.geometry.vertices[vertexIndex].clone();
+//         const globalVertex = localVertex.applyMatrix4(car.matrix);
+//         const directionVector = globalVertex.sub(car.position);
+//
+//         const ray = new Raycaster(car.position, directionVector.clone().normalize());
+//         rays.push(ray);
+//     }
+//
+// // Проверяем столкновения
+//     const collidableMeshList = [CARS.yellow, CARS.green]; // Массив объектов, с которыми проверяем столкновения
+//     for (const ray of rays) {
+//         const intersects = ray.intersectObjects(collidableMeshList);
+//         if (intersects.length > 0) {
+//             // Здесь можно обработать столкновение
+//             console.log("Collision detected!!!!");
+//         }
+//     }
     
 }
 
