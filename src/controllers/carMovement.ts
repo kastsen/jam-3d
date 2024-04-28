@@ -30,7 +30,7 @@ export const moveRed = (car: any, touch: any, previousMousePosition: any) => {
 
 export const moveGreen = (car: any, touch: any, previousMousePosition: any) => {
     const {position} = car;
-    console.log('car position', position)
+    console.log(position)
     if (position.z > -22 && position.z < 27) {
         if (touch.clientX >= previousMousePosition.x) {
             car.position.z -= 2; // Учитывайте, что ось y в 3D-пространстве может быть обратной
@@ -39,7 +39,11 @@ export const moveGreen = (car: any, touch: any, previousMousePosition: any) => {
             car.position.z += 2; // Учитывайте, что ось y в 3D-пространстве может быть обратной
         }
     } else {
-        
+        if (position.z <= -22) {
+            car.position.z = -19;
+        } else if (position.z >= 27) {
+            car.position.z = 23;
+        } 
     }
     
 }

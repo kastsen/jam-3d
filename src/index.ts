@@ -7,7 +7,7 @@ import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectio
 
 import jam from '../assets/glb/parking_jam_5.glb';
 import {DirectionalLight, Mesh} from "three";
-import {moveCar, moveGreen} from "./controllers/carMovement";
+import {moveCar} from "./controllers/carMovement";
 
 export const CARS: any = {};
 
