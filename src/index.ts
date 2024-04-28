@@ -7,7 +7,7 @@ import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectio
 
 import jam from '../assets/glb/parking_jam_5.glb';
 import {DirectionalLight, Mesh} from "three";
-import {moveGreen} from "./controllers/carMovement";
+import {moveCar, moveGreen} from "./controllers/carMovement";
 
 export const CARS: any = {};
 
@@ -127,12 +127,9 @@ window.onload = function () {
         document.addEventListener('pointerdown', onMouseDown);
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('pointerup', onMouseUp);
+        document.addEventListener('touchend', onTouchEnd);
         document.addEventListener('touchmove', onTouchMove);
 
-
-
-        // renderer.domElement.addEventListener('click', onClick, false);
-        
         let activeCar: any;
 
         function onTouchStart(event: any) {
@@ -185,12 +182,9 @@ window.onload = function () {
                 console.log('onTouchMove');
                 console.log(event.touches[0]);
                 console.log(previousMousePosition);
-                // Получаем текущие координаты касания
+                
                 const touch = event.touches[0];
-                const deltaX = touch.clientX - previousMousePosition.x;
-                const deltaY = touch.clientY - previousMousePosition.y;
-                const car = root.children[0]; // Измените этот путь, если изменяется название дочерней сцены
-                moveGreen(activeCar, touch, previousMousePosition);
+                moveCar(activeCar, touch, previousMousePosition);
 
                 // Обновляем предыдущие координаты касания
                 previousMousePosition = { x: touch.clientX, y: touch.clientY };
@@ -206,11 +200,7 @@ window.onload = function () {
                 // Изменяем позицию объекта на сцене в соответствии с перемещением мыши
                 // const car = root.children[0]; // Измените этот путь, если изменяется название дочерней сцены
                 // car.position.x += deltaY;
-                const car = root.children[0];
-                if (activeCar) {
-                    activeCar.position.z -= deltaX; // Учитывайте, что ось y в 3D-пространстве может быть обратной
-
-                }
+                moveCar(activeCar, event, previousMousePosition);
 
                 previousMousePosition = { x: event.clientX, y: event.clientY };
             }

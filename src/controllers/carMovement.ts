@@ -3,30 +3,53 @@ import {CARS} from "../index";
 const carWidth = 20;
 const carHeight = 15;
 
-export const moveCar = (car: any, touch: any, previousMousePosition: any) => {
+export const moveCar = (car: any, event: any, previousMousePosition: any) => {
     if (!car) return;
+    console.log(car.name)
     if (car.name === CARS.green.name) {
-        moveGreen(car, touch, previousMousePosition);
+        moveGreen(car, event, previousMousePosition);
     } else if (car.name === CARS.yellow.name) {
-        moveYellow(car, touch, previousMousePosition);
+        console.log('yellow')
+        moveYellow(car, event, previousMousePosition);
+    } else if (car.name === CARS.red.name) {
+        moveRed(car, event, previousMousePosition);
     }
 }
 
+export const moveRed = (car: any, touch: any, previousMousePosition: any) => {
+    const {position} = car;
+    if (position.x > -17 || position.x < 20) {
+        if (touch.clientX >= previousMousePosition.x) {
+            car.position.z -= 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+        } else {
+            car.position.z += 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+        }
+    }
+    
+}
 
 export const moveGreen = (car: any, touch: any, previousMousePosition: any) => {
-    if (!car) return;
-    greenMovementBorders(car, touch, previousMousePosition);
-    
-    if (touch.clientX >= previousMousePosition.x) {
-        car.position.z -= 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+    const {position} = car;
+    console.log('car position', position)
+    if (position.z > -22 && position.z < 27) {
+        if (touch.clientX >= previousMousePosition.x) {
+            car.position.z -= 2; // Учитывайте, что ось y в 3D-пространстве может быть обратной
 
+        } else {
+            car.position.z += 2; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+        }
     } else {
-        car.position.z += 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+        
     }
+    
 }
 
 export const moveYellow = (car: any, touch: any, previousMousePosition: any) => {
-    if (!car) return;
+    if (touch.clientY >= previousMousePosition.y) {
+        car.position.x += 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+    } else {
+        car.position.x -= 4; // Учитывайте, что ось y в 3D-пространстве может быть обратной
+    }
     yellowMovementBorders(car, touch, previousMousePosition);
 }
 
