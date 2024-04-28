@@ -3,6 +3,7 @@ import {CARS} from "../index";
 
 export const driveCar = async (car: any, touch: any, previousMousePosition: any) => {
     console.log('driveCar');
+    if (!car) return;
     if (car.name === CARS.green.name) {
         await gsap.to(car.position, {
             duration: 1, // Длительность анимации (в секундах)

@@ -12,6 +12,7 @@ import gsap from 'gsap';
 import {driveCar} from "./controllers/carDriving";
 
 export const CARS: any = {};
+let GRASS: any;
 
 window.onload = function () {
     // Создаем сцену
@@ -36,12 +37,15 @@ window.onload = function () {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Мягкое освещение всей сцены
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 7); // Направленный источник света
-    directionalLight.position.set(10, 10, 10);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 10);
+    directionalLight.position.set(10, 20, 10); // Позиция света
     scene.add(directionalLight);
 
     // Добавляем тени
     renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.size = 2048;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+
     renderer.setClearColor(0x1F9C51); // Устанавливаем цвет фона (черный, например)
     // directionalLight.castShadow = true;
 
@@ -82,10 +86,23 @@ window.onload = function () {
             directionalLight.intensity = 8;
             directionalLight.position.set(10, 10, 10);
         }
-        scene.add(directionalLight);
+        root.add(directionalLight);
+
+
+        // Создаем плоскость для теней (землю)
+        GRASS = root.children[9];
+        const planeSize = 200;
+        const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
+        const planeMat = new THREE.MeshPhongMaterial({ color: 0x8AC, side: THREE.DoubleSide });
+        const planeMesh = new THREE.Mesh(planeGeo, planeMat);
+        planeMesh.rotation.x = Math.PI * -0.5; // Поворот плоскости в горизонтальной плоскости
+        planeMesh.receiveShadow = true; // Принимает тени
+        GRASS.add(planeMesh);
+        
+        
 
         // Также добавьте тень, если необходимо
-        renderer.shadowMap.enabled = true;
+       
         directionalLight.castShadow = true;
         // Настройте параметры теней, если это необходимо
 
@@ -112,6 +129,7 @@ window.onload = function () {
         CARS.green = root.children[0];
         CARS.yellow = root.children[1];
         CARS.red = root.children[2];
+        
 
         // Постобработка для улучшения изображения
         const composer = new EffectComposer(renderer);
@@ -184,7 +202,6 @@ window.onload = function () {
 
         function onPointerUp(event: any) {
             isDragging = false;
-            driveCar(activeCar, event, previousMousePosition);
         }
 
         // Анимация и рендеринг

@@ -1,8 +1,11 @@
 import {CARS} from "../index";
 import {Raycaster} from "three";
+import {driveCar} from "./carDriving";
 
 const carWidth = 20;
 const carHeight = 15;
+
+export let movingDisabled = false;
 
 export const moveCar = (car: any, event: any, previousMousePosition: any) => {
     if (!car) return;
@@ -53,6 +56,7 @@ export const moveRed = (car: any, touch: any, previousMousePosition: any) => {
 }
 
 export const moveGreen = (car: any, touch: any, previousMousePosition: any) => {
+    if (movingDisabled) return;
     const {position} = car;
     console.log(position)
     if (position.z > -22 && position.z < 27) {
@@ -66,7 +70,8 @@ export const moveGreen = (car: any, touch: any, previousMousePosition: any) => {
         if (position.z <= -22) {
             car.position.z = -19;
         } else if (position.z >= 27) {
-            car.position.z = 23;
+            movingDisabled = true;
+            driveCar(car, touch, previousMousePosition);
         } 
     }
     
