@@ -4,6 +4,7 @@
   "description": "A simple scene using Babylon.js, typescript and webpack. What could go wrong?",
   "main": "index.ts",
   "dependencies": {
+    "gsap": "^3.12.5",
     "three": "~0.164.1"
   },
   "devDependencies": {

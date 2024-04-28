@@ -8,6 +8,8 @@ import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectio
 import jam from '../assets/glb/parking_jam_5.glb';
 import {DirectionalLight, Mesh} from "three";
 import {moveCar} from "./controllers/carMovement";
+import gsap from 'gsap';
+import {driveCar} from "./controllers/carDriving";
 
 export const CARS: any = {};
 
@@ -124,29 +126,14 @@ window.onload = function () {
         let previousMousePosition = { x: 0, y: 0 };
 
         // Добавляем обработчики событий для мыши
-        document.addEventListener('pointerdown', onMouseDown);
+        document.addEventListener('pointerdown', onTouchDown);
         document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('pointerup', onMouseUp);
-        document.addEventListener('touchend', onTouchEnd);
+        document.addEventListener('pointerup', onPointerUp);
         document.addEventListener('touchmove', onTouchMove);
 
         let activeCar: any;
 
-        function onTouchStart(event: any) {
-            // Получаем координаты касания
-            const touch = event.touches[0];
-            previousMousePosition = { x: touch.clientX, y: touch.clientY };
-            isDragging = true;
-        }
-
-        function onTouchEnd() {
-            // Конец перетаскивания объекта по тачпаду
-            isDragging = false;
-        }
-
-        function onMouseDown(event: any) {
-            console.log('onClick !!!!!!!!!!!!!!!!')
-
+        function onTouchDown(event: any) {
             isDragging = true;
             previousMousePosition = { x: event.clientX, y: event.clientY };
 
@@ -166,6 +153,7 @@ window.onload = function () {
                 const clickedObject = intersects[0].object;
                 if (clickedObject.parent?.name.match('green') || clickedObject?.name.match('green')) {
                     activeCar = CARS.green;
+                    
                 } else if (clickedObject.parent?.name.match('yellow') || clickedObject?.name.match('yellow')) {
                     activeCar = CARS.yellow;
                 } else if (clickedObject.parent?.name.match('red') || clickedObject?.name.match('red')) {
@@ -179,10 +167,6 @@ window.onload = function () {
 
         function onTouchMove(event: any) {
             if (isDragging) {
-                console.log('onTouchMove');
-                console.log(event.touches[0]);
-                console.log(previousMousePosition);
-                
                 const touch = event.touches[0];
                 moveCar(activeCar, touch, previousMousePosition);
 
@@ -192,22 +176,15 @@ window.onload = function () {
         }
 
         function onMouseMove(event: any) {
-            console.log('onMouseMove !!!!!!!!!!!!!!!!')
             if (isDragging) {
-                const deltaX = event.clientX - previousMousePosition.x;
-                const deltaY = event.clientY - previousMousePosition.y;
-
-                // Изменяем позицию объекта на сцене в соответствии с перемещением мыши
-                // const car = root.children[0]; // Измените этот путь, если изменяется название дочерней сцены
-                // car.position.x += deltaY;
                 moveCar(activeCar, event, previousMousePosition);
-
                 previousMousePosition = { x: event.clientX, y: event.clientY };
             }
         }
 
-        function onMouseUp() {
+        function onPointerUp(event: any) {
             isDragging = false;
+            driveCar(activeCar, event, previousMousePosition);
         }
 
         // Анимация и рендеринг
@@ -217,12 +194,6 @@ window.onload = function () {
         }
 
         animate();
-
-
-
-        
-        
-        
 
         function onWindowResize() {
             const width = window.innerWidth;
