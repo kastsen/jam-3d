@@ -12,7 +12,7 @@ export const driveCar = async (car: any, touch: any, previousMousePosition: any)
         });
 
         gsap.to(car.rotation, {
-            duration: 1, // Длительность анимации (в секундах)
+            duration: 0.5, // Длительность анимации (в секундах)
             y: Math.PI / 2, // Новый масштаб по оси Z
             ease: "power2.out", // Эффект анимации (можно выбрать другой)
         });
@@ -25,53 +25,81 @@ export const driveCar = async (car: any, touch: any, previousMousePosition: any)
 
         await gsap.to(car.position, {
             duration: 0.5, // Длительность анимации (в секундах)
-            x: car.position.x + 90, // Новый масштаб по оси Z
+            x: car.position.x + 110, // Новый масштаб по оси Z
             ease: Linear.easeNone,
         });
 
-        gsap.to(car.position, {
-            duration: 1, // Длительность анимации (в секундах)
-            x: car.position.x + 20, // Новый масштаб по оси Z
-            ease: Linear.easeNone,
-        });
+
 
         gsap.to(car.rotation, {
-            duration: 1, // Длительность анимации (в секундах)
-            y: 0, // Новый масштаб по оси Z
+            duration: 0.25, // Длительность анимации (в секундах)
+            y: Math.PI, // Новый масштаб по оси Z
             ease: Linear.easeNone,
         });
 
         await gsap.to(car.position, {
-            duration: 1, // Длительность анимации (в секундах)
-            x: car.position.x + 40, // Новый масштаб по оси Z
-            z: car.position.z - 30, // Новый масштаб по оси Z
+            duration: 0.25, // Длительность анимации (в секундах)
+            x: car.position.x + 22, // Новый масштаб по оси Z
+            z: car.position.z - 10, // Новый масштаб по оси Z
             ease: Linear.easeNone,
         });
 
         await gsap.to(car.position, {
-            duration: 1, // Длительность анимации (в секундах)
-            z: car.position.z - 140, // Новый масштаб по оси Z
+            duration: 0.5, // Длительность анимации (в секундах)
+            z: car.position.z - 160, // Новый масштаб по оси Z
             ease: Linear.easeNone,
         });
 
         gsap.to(car.rotation, {
-            duration: 1, // Длительность анимации (в секундах)
-            y: -Math.PI / 2, // Новый масштаб по оси Z
+            duration: 0.25, // Длительность анимации (в секундах)
+            y: Math.PI * 1.5, // Новый масштаб по оси Z
             ease: "power2.out", // Эффект анимации (можно выбрать другой)
         });
 
         await gsap.to(car.position, {
-            duration: 1, // Длительность анимации (в секундах)
+            duration: 0.25, // Длительность анимации (в секундах)
             x: car.position.x - 30, // Новый масштаб по оси Z
             z: car.position.z - 20, // Новый масштаб по оси Z
             ease: Linear.easeNone,
         });
 
-        gsap.to(car.position, {
-            duration: 1, // Длительность анимации (в секундах)
+        await gsap.to(car.position, {
+            duration: 0.6, // Длительность анимации (в секундах)
             x: car.position.x - 130, // Новый масштаб по оси Z
             ease: Linear.easeNone,
         });
+
+        gsap.to(car.rotation, {
+            duration: 0.25, // Длительность анимации (в секундах)
+            y: Math.PI*2, // Новый масштаб по оси Z
+            ease: "power2.out", // Эффект анимации (можно выбрать другой)
+        });
+
+        await gsap.to(car.position, {
+            duration: 0.25, // Длительность анимации (в секундах)
+            x: car.position.x - 20, // Новый масштаб по оси Z
+            z: car.position.z + 90, // Новый масштаб по оси Z
+            ease: Linear.easeNone,
+        });
+
+        gsap.to(car.rotation, {
+            duration: 0.25, // Длительность анимации (в секундах)
+            y: Math.PI*1.5, // Новый масштаб по оси Z
+            ease: "power2.out", // Эффект анимации (можно выбрать другой)
+        });
+
+        await gsap.to(car.position, {
+            duration: 0.25, // Длительность анимации (в секундах)
+            x: car.position.x - 20, // Новый масштаб по оси Z
+            z: car.position.z + 20, // Новый масштаб по оси Z
+            ease: Linear.easeNone,
+        });
+
+        await gsap.to(car.position, {
+            duration: 0.5, // Длительность анимации (в секундах)
+            x: car.position.x - 1320, // Новый масштаб по оси Z
+            ease: Linear.easeNone,
+        });
     }
-    
+
 }
