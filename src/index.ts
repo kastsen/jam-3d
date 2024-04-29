@@ -5,7 +5,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader';
 
-import jam from '../assets/glb/parking_jam_29_04_16_35.glb';
+import jam from '../assets/glb/test.glb';
 import {DirectionalLight, Mesh} from "three";
 import {moveCar} from "./controllers/carMovement";
 import gsap from 'gsap';
@@ -47,7 +47,7 @@ window.onload = function () {
     directionalLight.castShadow = true;
 
     // Настраиваем параметры теней
-    directionalLight.shadow.mapSize.width = 2024;
+    directionalLight.shadow.mapSize.width = 3024;
     directionalLight.shadow.mapSize.height = 2024;
     directionalLight.shadow.camera.near = 0.5;
     directionalLight.shadow.camera.far = 500;
