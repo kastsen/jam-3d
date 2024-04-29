@@ -21,8 +21,9 @@ window.onload = function () {
     // Создаем камеру (перспективная камера)
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.set(200, 400, 300); // Немного спереди и высоко
+    const camera = new THREE.PerspectiveCamera(
+        75, width / height, 0.1, 1500);
+    camera.position.set(180, 500, 420); // Немного спереди и высоко
     camera.rotateX(-Math.PI / 3); // Поворот камеры на 45 градусов вокруг оси X
 
     // Создаем рендерер
@@ -30,10 +31,6 @@ window.onload = function () {
     renderer.setSize(width, height);
     document.body.appendChild(renderer.domElement);
 
-    // Добавляем вспомогательные оси для ориентации
-    // scene.add(new THREE.AxesHelper(5));
-    //
-    // Создаем освещение
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Мягкое освещение всей сцены
     scene.add(ambientLight);
 
@@ -47,7 +44,7 @@ window.onload = function () {
     renderer.shadowMap.type = THREE.PCFShadowMap;
 
     renderer.setClearColor(0x1F9C51); // Устанавливаем цвет фона (черный, например)
-    // directionalLight.castShadow = true;
+    directionalLight.castShadow = true;
 
     // Настраиваем параметры теней
     directionalLight.shadow.mapSize.width = 2024;
@@ -70,37 +67,10 @@ window.onload = function () {
 
         // Создаем свой направленный источник света на основе параметров из glTF
         const directionalLight = new THREE.DirectionalLight();
-        if (gltfDirectionalLight) {
-            directionalLight.color.copy(gltfDirectionalLight.color);
-            directionalLight.intensity = gltfDirectionalLight.intensity;
-            directionalLight.position.copy(gltfDirectionalLight.position);
-            // Направление может быть сохранено в целевом объекте в glTF сцене
-            if (gltfDirectionalLight.target) {
-                const targetPosition = new THREE.Vector3();
-                gltfDirectionalLight.target.getWorldPosition(targetPosition);
-                directionalLight.target.position.copy(targetPosition);
-            }
-        } else {
-            // Если свет не найден в glTF сцене, используем значения по умолчанию
-            directionalLight.color.set(0xffffff);
-            directionalLight.intensity = 8;
-            directionalLight.position.set(10, 10, 10);
-        }
         root.add(directionalLight);
-
 
         // Создаем плоскость для теней (землю)
         GRASS = root.children[9];
-        // const planeSize = 200;
-        // const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
-        // const planeMat = new THREE.MeshPhongMaterial({ color: 0x8AC, side: THREE.DoubleSide });
-        // const planeMesh = new THREE.Mesh(planeGeo, planeMat);
-        // planeMesh.rotation.x = Math.PI * -0.5; // Поворот плоскости в горизонтальной плоскости
-        // planeMesh.receiveShadow = true; // Принимает тени
-        // GRASS.add(planeMesh);
-
-       
-        
         
 
         // Также добавьте тень, если необходимо
