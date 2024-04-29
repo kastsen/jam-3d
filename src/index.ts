@@ -5,7 +5,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader';
 
-import jam from '../assets/glb/parking_jam_5.glb';
+import jam from '../assets/glb/parking_jam_29_04_16_35.glb';
 import {DirectionalLight, Mesh} from "three";
 import {moveCar} from "./controllers/carMovement";
 import gsap from 'gsap';
@@ -171,7 +171,7 @@ window.onload = function () {
             if (intersects.length > 0) {
                 // Если луч пересек объекты в сцене
                 const clickedObject = intersects[0].object;
-                if (clickedObject.parent?.name.match('green') || clickedObject?.name.match('green')) {
+                if (clickedObject.parent?.name.match('orange') || clickedObject?.name.match('orange')) {
                     activeCar = CARS.green;
                     
                 } else if (clickedObject.parent?.name.match('yellow') || clickedObject?.name.match('yellow')) {
